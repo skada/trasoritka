@@ -28,16 +28,17 @@
   <div class="content">
     <div class="maso-list gallery list-sm-12">
       <div class="maso-box row" data-lightbox-anima="fade-top">
-        {% for image in images %}
+        {% for i in images %}
 
         <div data-sort="2" class="maso-item col-md-3 cat1 cat3">
           <div class="img-box adv-img adv-img-classic-box">
-            <a class="img-box mfp-inline" data-anima="show-scale" data-anima-out="hide" href="#image_{{ image.pk}}">
-              <img id="image_{{ image.pk}}" src="{{ image.file.url}}" alt="">
+            {% image i original as img %}
+            <a class="img-box mfp-inline" data-anima="show-scale" data-anima-out="hide" href="#image_{{ img.pk }}">
+              <img id="image_{{ img.pk }}" src="{{ img.url }}">
             </a>
             <div class="caption">
               <div class="caption-inner">
-                <h2>{{ image.title }}</h2>
+                <h2>{{ i.title }}</h2>
                 <!--<p class="sub-text">Krátký popis</p>-->
                 <!--<p class="big-text">-->
                   <!--Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.-->
