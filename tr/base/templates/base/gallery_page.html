@@ -1,0 +1,56 @@
+{% extends 'base/page_header_image.html' %}
+{% load wagtailcore_tags wagtailimages_tags static %}
+
+{% block body %}
+{% image page.image fill-1920x600 as tmp_photo %}
+<div class="header-title ken-burn-out" data-parallax="scroll" data-position="top" data-natural-height="600"
+     data-natural-width="1920" data-image-src="{{ tmp_photo.url }}">
+  <div class="container">
+    <div class="title-base">
+      <hr class="anima"/>
+      {% block image_title %}
+      <h1>{{ page.title }}</h1>
+      {{ page.specific.description|richtext }}
+      {% endblock image_title %}
+    </div>
+  </div>
+</div>
+<div class="section-bg-image2 parallax-window white" data-natural-height="400" data-natural-width="100"
+     data-parallax="scroll" data-image-src="{% static 'images/barevne-pruhy.jpg' %}">
+  <div class="container content">
+    <div class="row">
+
+    </div>
+  </div>
+</div>
+
+<div class="section-empty section-item">
+  <div class="content">
+    <div class="maso-list gallery list-sm-12">
+      <div class="maso-box row" data-lightbox-anima="fade-top">
+        {% for image in images %}
+
+        <div data-sort="2" class="maso-item col-md-3 cat1 cat3">
+          <div class="img-box adv-img adv-img-classic-box">
+            <a class="img-box mfp-inline" data-anima="show-scale" data-anima-out="hide" href="#image_{{ image.pk}}">
+              <img id="image_{{ image.pk}}" src="{{ image.file.url}}" alt="">
+            </a>
+            <div class="caption">
+              <div class="caption-inner">
+                <h2>{{ image.title }}</h2>
+                <!--<p class="sub-text">Krátký popis</p>-->
+                <!--<p class="big-text">-->
+                  <!--Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.-->
+                <!--</p>-->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}
