@@ -1,0 +1,9 @@
+{% load wagtailcore_tags %}
+
+<div class="section-empty">
+  <div class="container content">
+    {% for child in value %}
+    {% include_block child %}
+    {% endfor %}
+  </div>
+</div>

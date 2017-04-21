@@ -1,0 +1,41 @@
+{% load wagtailcore_tags wagtailimages_tags i18n %}
+
+
+  <div class="section-slider home-slider full-screen-size box-middle-container">
+    <div class="flexslider advanced-slider slider" data-options="animation:fade">
+      <ul class="slides">
+        {% for slide in value %}
+        <li data-slider-anima="fade-left">
+          <div class="section-slide">
+            {% image slide.image fill-1920x600 as tmp_photo %}
+            <div class="bg-cover" style="background-image:url('{{ tmp_photo.url }}')">
+            </div>
+            <div class="container">
+              <div class="container-middle">
+                <div class="container-inner text-left">
+                  <div class="row vertical-row">
+                    <div class="col-md-4 col-sm-12">
+                      <h1 class="text-l anima">{{ slide.title }}</h1>
+                      <hr class="space s"/>
+                      <p class="anima text-m">
+                      {{ slide.description }}
+                      </p>
+                      <hr class="space m"/>
+                      {% if slide.page %}
+                      <a href="{% pageurl slide.page %}" class="btn square-button anima anima-fade-left" type="button">{{ slide.page.title}}</a>
+                      {% elif slide.link %}
+                      <a href="{{ slide.link }}" class="btn square-button anima anima-fade-left" type="button">{% trans 'More info...' %}</a>
+                      {% endif %}
+                      <span class="space"></span>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>

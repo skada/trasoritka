@@ -1,0 +1,28 @@
+{% load wagtailcore_tags wagtailimages_tags%}
+  {% image value.image fill-1920x600 as tmp_photo %}
+    <div class="header-title" data-parallax="scroll" data-position="top" data-natural-height="600" data-natural-width="1920" data-image-src="{{ tmp_photo.url }}">
+        <div class="container">
+            <div class="title-base">
+                <hr class="anima" />
+                <h1 class="text-l anima">{{ value.title }}</h1>
+                <hr class="space s"/>
+                <p class="anima text-m">
+                {{ value.description }}
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+  <!--<div class="header-title ken-burn-out" data-parallax="scroll" data-position="top" data-natural-height="600"-->
+       <!--data-natural-width="1920" data-image-src="{{ tmp_photo.url }}">-->
+    <!--<div class="container">-->
+      <!--<div class="title-base">-->
+        <!--<hr class="anima"/>-->
+        <!--{% block image_title %}-->
+        <!--<h1>{{ page.title }}</h1>-->
+        <!--{{ page.specific.description|richtext }}-->
+        <!--{% endblock image_title %}-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->

@@ -1,10 +1,12 @@
 from django.db import models
+from django.utils.functional import lazy
 from django.utils.translation import ugettext_lazy as _
 from wagtail.wagtailadmin.edit_handlers import StreamFieldPanel, FieldPanel
 
 from wagtail.wagtailcore import blocks
 from wagtail.wagtailcore.fields import StreamField
 from wagtail.wagtailcore.models import Page, Collection
+from wagtail.wagtailimages.blocks import ImageChooserBlock
 from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
 from wagtail.wagtailimages.models import Image
 
@@ -40,6 +42,17 @@ COL_WIDTHS = (
 )
 
 
+class FullWidthImageBlock(blocks.StructBlock):
+    image = ImageChooserBlock()
+    title = blocks.CharBlock(required=False)
+    description = blocks.TextBlock(required=False)
+    page = blocks.PageChooserBlock(required=False)
+    link = blocks.URLBlock(required=False)
+
+    class Meta:
+        template = 'blocks/full_width_image_block.html'
+
+
 class RichTextColBlock(blocks.StructBlock):
     width = blocks.ChoiceBlock(COL_WIDTHS, COL_WIDTH_FULL, required=True)
     content = blocks.RichTextBlock(required=True)
@@ -69,36 +82,65 @@ class HeaderBlock(blocks.StructBlock):
         template = 'blocks/header_block.html'
 
 
-class RichTextPage(PageHeaderImage):
-    body = StreamField([
-        ('header', HeaderBlock()),
-        ('rows', RichTextRowBlock()),
-    ], blank=True,)
+class SectionBlock(blocks.StreamBlock):
+    header = HeaderBlock()
+    rows = RichTextRowBlock()
 
-    content_panels = PageHeaderImage.content_panels + [
+    class Meta:
+        template = 'blocks/section_block.html'
+
+
+class SeparatorBlock(blocks.StaticBlock):
+    class Meta:
+        template = 'blocks/separator_block.html'
+
+
+class CarouselBlock(blocks.ListBlock):
+
+    def __init__(self, *args, **kwargs):
+        super(CarouselBlock, self).__init__(
+            child_block=FullWidthImageBlock(),
+            *args,
+            **kwargs
+        )
+    class Meta:
+        template = 'blocks/carousel_block.html'
+
+
+class RichTextPage(Page):
+
+    body = StreamField([
+        ('full_size_image', FullWidthImageBlock()),
+        ('section', SectionBlock()),
+        ('separator', SeparatorBlock()),
+        ('carousel', CarouselBlock()),
+    ],
+    blank=True,)
+
+    content_panels = Page.content_panels + [
         StreamFieldPanel('body'),
     ]
 
     class Meta:
         verbose_name = _('Rich text Page')
         verbose_name_plural = _('Rich text Pages')
-
-
-class GalleryPage(PageHeaderImage):
-    collection = models.ForeignKey(Collection, null=True, blank=True, on_delete=models.SET_NULL)
-
-    content_panels = PageHeaderImage.content_panels + [
-        FieldPanel('collection'),
-    ]
-
-    def get_context(self, request, *args, **kwargs):
-        context = super(GalleryPage, self).get_context(request, *args, **kwargs)
-        if self.collection:
-            context['images'] = Image.objects.filter(collection=self.collection)
-        else:
-            context['images'] = None
-        return context
-
-    class Meta:
-        verbose_name = _('Gallery Page')
-        verbose_name_plural = _('Gallery Pages')
+#
+#
+# class GalleryPage(PageHeaderImage):
+#     collection = models.ForeignKey(Collection, null=True, blank=True, on_delete=models.SET_NULL)
+#
+#     content_panels = PageHeaderImage.content_panels + [
+#         FieldPanel('collection'),
+#     ]
+#
+#     def get_context(self, request, *args, **kwargs):
+#         context = super(GalleryPage, self).get_context(request, *args, **kwargs)
+#         if self.collection:
+#             context['images'] = Image.objects.filter(collection=self.collection)
+#         else:
+#             context['images'] = None
+#         return context
+#
+#     class Meta:
+#         verbose_name = _('Gallery Page')
+#         verbose_name_plural = _('Gallery Pages')
