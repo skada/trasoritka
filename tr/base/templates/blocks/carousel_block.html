@@ -7,7 +7,7 @@
         {% for slide in value %}
         <li data-slider-anima="fade-left">
           <div class="section-slide">
-            {% image slide.image fill-1920x600 as tmp_photo %}
+            {% image slide.image original as tmp_photo %}
             <div class="bg-cover" style="background-image:url('{{ tmp_photo.url }}')">
             </div>
             <div class="container">
@@ -15,7 +15,7 @@
                 <div class="container-inner text-left white">
                   <div class="row vertical-row">
                     <div class="col-md-4 col-sm-12">
-                      <h1 class="text-l anima">{{ slide.title }}</h1>
+                      <h1 class="text-xl anima white">{{ slide.title }}</h1>
                       <hr class="space s"/>
                       <p class="anima text-m">
                       {{ slide.description }}
