@@ -53,22 +53,38 @@ class FullWidthImageBlock(blocks.StructBlock):
         template = 'blocks/full_width_image_block.html'
 
 
-class RichTextColBlock(blocks.StructBlock):
+class ColBlock(blocks.StructBlock):
     width = blocks.ChoiceBlock(COL_WIDTHS, COL_WIDTH_FULL, required=True)
+
+
+class RichTextColBlock(ColBlock):
     content = blocks.RichTextBlock(required=True)
 
     class Meta:
         template = 'blocks/rich_text_col_block.html'
 
 
-class RichTextRowBlock(blocks.ListBlock):
+class AccordionItemBlock(blocks.StructBlock):
+    title = blocks.CharBlock(required=True)
+    content = blocks.TextBlock(required=True)
 
-    def __init__(self, *args, **kwargs):
-        super(RichTextRowBlock, self).__init__(
-            child_block=RichTextColBlock(),
-            *args,
-            **kwargs
-        )
+    class Meta:
+        template = 'blocks/accordion_item_block.html'
+
+
+class AccordionBlock(ColBlock):
+
+    accordion_items = blocks.StreamBlock([
+        ('accordion_item', AccordionItemBlock())
+    ])
+
+    class Meta:
+        template = 'blocks/accordion_block.html'
+
+
+class RichTextRowBlock(blocks.StreamBlock):
+    accordion = AccordionBlock()
+    rich_text = RichTextColBlock()
 
     class Meta:
         template = 'blocks/rich_text_row_block.html'
@@ -82,9 +98,23 @@ class HeaderBlock(blocks.StructBlock):
         template = 'blocks/header_block.html'
 
 
-class SectionBlock(blocks.StreamBlock):
-    header = HeaderBlock()
-    rows = RichTextRowBlock()
+SECTION_PLAIN = 'empty'
+SECTION_COLOR = 'bg-color'
+SECTION_IMAGE = 'bg-image'
+SECTION_TYPE = (
+    (SECTION_PLAIN, _('Plain section')),
+    (SECTION_COLOR, _('Color section')),
+    (SECTION_IMAGE, _('Image section')),
+)
+
+
+class SectionBlock(blocks.StructBlock):
+    section_type = blocks.ChoiceBlock(choices=SECTION_TYPE, default=SECTION_PLAIN)
+    image = ImageChooserBlock(required=False)
+    content = blocks.StreamBlock([
+        ('header', HeaderBlock()),
+        ('row', RichTextRowBlock()),
+    ])
 
     class Meta:
         template = 'blocks/section_block.html'
@@ -135,6 +165,25 @@ class CountersBlock(blocks.ListBlock):
         template = 'blocks/counters_block.html'
 
 
+class MiniSliderBlock(blocks.ListBlock):
+
+    def __init__(self, *args, **kwargs):
+        super(MiniSliderBlock, self).__init__(
+            child_block=ImageChooserBlock(),
+            *args,
+            **kwargs
+        )
+
+    class Meta:
+        template = 'blocks/minislider_block.html'
+
+
+class ContactBlock(blocks.StructBlock):
+
+    class Meta:
+        template = 'blocks/contact_block.html'
+
+
 class RichTextPage(Page):
 
     body = StreamField([
@@ -143,6 +192,8 @@ class RichTextPage(Page):
         ('separator', SeparatorBlock()),
         ('carousel', CarouselBlock()),
         ('counters', CountersBlock()),
+        ('minislider', MiniSliderBlock()),
+        ('contact_panel', ContactBlock()),
     ],
     blank=True,)
 

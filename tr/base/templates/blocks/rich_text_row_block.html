@@ -1,9 +1,6 @@
 {% load wagtailcore_tags wagtailimages_tags static %}
 <div class="row">
   {% for i in value %}
-  <div class="col-md-{{i.width}}">
-    {{ i.content|richtext }}
-  </div>
+  {% include_block i %}
   {% endfor %}
 </div>
-<hr/>

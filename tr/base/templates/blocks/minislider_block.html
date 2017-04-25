@@ -1,0 +1,18 @@
+{% load wagtailimages_tags %}
+<div class="section-empty no-paddings">
+  <div class="content">
+    <div class="flexslider carousel gallery nav-inner" data-options="minWidth:150,numItems:5,itemMargin:0">
+      <ul class="slides">
+        {% for slide in value %}
+        {% image slide original as tmp_slide %}
+        <li>
+          <a class="img-box img-scale-up lightbox grayscale row-10" href="{{ tmp_slide.url }}"
+             data-lightbox-anima="show-scale">
+            <img src="{{ tmp_slide.url }}" alt="">
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>

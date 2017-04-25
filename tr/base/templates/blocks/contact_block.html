@@ -1,0 +1,42 @@
+{% load static %}
+    <div class="section-two-blocks">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="google-map" data-skin="gray" data-coords="50.103354, 14.394607" data-marker="{% static 'images/marker-map.png' %}" style="height:540px"></div>
+            </div>
+            <div class="col-md-6">
+                <div class="content">
+                    <form action="#" class="form-box form-ajax" method="post" data-email="lukas@e-smile.cz">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>Jméno a příjmení</p>
+                                <input id="name" name="name" placeholder="..." type="text" class="form-control form-value" required>
+                            </div>
+                            <div class="col-md-6">
+                                <p>E-mail</p>
+                                <input id="email-2" name="email" placeholder="" type="email" class="form-control form-value" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <hr class="space xs" />
+                                <p>Telefon</p>
+                                <input id="phone" name="phone" placeholder="" type="text" class="form-control form-value">
+                                <hr class="space xs" />
+                                <p>Zpráva</p>
+                                <textarea id="messagge" name="messagge" class="form-control form-value" required></textarea>
+                                <hr class="space s" />
+                                <button class="square-button btn-sm btn" type="submit"><i class="fa fa-envelope-o"></i>Odeslat zprávu</button>
+                            </div>
+                        </div>
+                        <div class="success-box">
+                            <div class="alert alert-success">Vaše zpráva byla odeslána, brzy se ozveme!</div>
+                        </div>
+                        <div class="error-box">
+                            <div class="alert alert-warning">Vyskytla se chyba, zkuste to, prosíme, znovu.</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,8 +1,8 @@
-{% load wagtailcore_tags %}
-
-<div class="section-empty">
+{% load wagtailcore_tags wagtailimages_tags %}
+{% image value.image original as tmp_image %}
+<div class="section-{{value.section_type}}{% if tmp_image %} parallax-window{% endif %}"{% if tmp_image %} data-natural-height="{{ tmp_image.height }}" data-natural-width="{{ tmp_image.width }}" data-parallax="scroll" data-image-src="{{ tmp_image.url }}"{% endif %}>
   <div class="container content">
-    {% for child in value %}
+    {% for child in value.content %}
     {% include_block child %}
     {% endfor %}
   </div>
