@@ -1,0 +1,20 @@
+{% load wagtailcore_tags %}
+    <div class="section-bg-color">
+        <div class="container content">
+            <div class="row">
+                {% for counter in value %}
+                <div class="col-md-{{ counter.width }}">
+                    <div class="icon-box counter-box-icon">
+                        <div class="icon-box-cell">
+                            <i class="{{ counter.icon }} text-xl"></i>
+                        </div>
+                        <div class="icon-box-cell">
+                            <label class="counter text-l" data-speed="5000" data-to="{{ counter.count }}">{{ counter.count }}</label>
+                            <p>{{ counter.label }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>

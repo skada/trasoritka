@@ -107,6 +107,34 @@ class CarouselBlock(blocks.ListBlock):
         template = 'blocks/carousel_block.html'
 
 
+ICON_CHOICES = (
+    ('im-user', _('User')),
+    ('im-factory', _('Factory')),
+    ('im-project', _('Project')),
+    ('im-idea', _('Idea')),
+)
+
+
+class CounterItemBlock(blocks.StructBlock):
+    width = blocks.ChoiceBlock(choices=COL_WIDTHS, default=COL_WIDTH_QUARTER)
+    icon = blocks.ChoiceBlock(choices=ICON_CHOICES)
+    count = blocks.IntegerBlock(min_value=0)
+    label = blocks.CharBlock()
+
+
+class CountersBlock(blocks.ListBlock):
+
+    def __init__(self, *args, **kwargs):
+        super(CountersBlock, self).__init__(
+            child_block=CounterItemBlock(),
+            *args,
+            **kwargs
+        )
+
+    class Meta:
+        template = 'blocks/counters_block.html'
+
+
 class RichTextPage(Page):
 
     body = StreamField([
@@ -114,6 +142,7 @@ class RichTextPage(Page):
         ('section', SectionBlock()),
         ('separator', SeparatorBlock()),
         ('carousel', CarouselBlock()),
+        ('counters', CountersBlock()),
     ],
     blank=True,)
 
