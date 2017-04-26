@@ -1,0 +1,15 @@
+ {% load wagtailimages_tags  %}
+                <div class="col-md-6 col-sm-12">
+                    <div class="flexslider slider nav-inner" data-options="directionNav:false">
+                        <ul class="slides">
+                          {% for i in value.images %}
+                          {% image i.bound_block original as tmp_image %}
+                            <li>
+                                <a class="img-box" data-lightbox-anima="show-scale" href="#">
+                                    <img src="{{ tmp_image.url }}" alt="" />
+                                </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                    </div>
+                </div>

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load wagtailcore_tags wagtailimages_tags static %}
+
+{% block body %}
+
+  {% for page_block in page.body %}
+  {% include_block page_block %}
+  {% endfor %}
+
+{% endblock body %}

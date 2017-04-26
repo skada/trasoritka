@@ -1,0 +1,23 @@
+{% load wagtailcore_tags %}
+    <div class="section-map box-middle-container" style="height:600px;">
+		<div class="google-map" data-coords="50.103354, 14.394607" data-zoom="16" data-marker-pos-top="30" data-marker-pos="col-md-6-left" data-marker="images/marker-map.png"></div>
+
+
+        <div class="overlaybox overlaybox-side overlaybox-right">
+            <div class="container content">
+                <div class="row">
+                    <div class="col-md-6"></div>
+                    <div class="col-md-6 overlaybox-inner box-middle text-right">
+                        <div class="row">
+                            <div class="col-md-6">
+                            {{ value.left_column|safe}}
+                            </div>
+                            <div class="col-md-6">
+                            {{ value.right_column|safe}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

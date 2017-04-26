@@ -1,0 +1,10 @@
+ {% load wagtailcore_tags %}
+   <div class="col-md-{{value.width}}">
+    <h4>{{value.title}}</h4>
+    <hr class="space s">
+    <div class="list-group accordion-list" data-time="1000" data-type="accordion">
+      {% for ai in value.accordion_items %}
+        {% include_block ai %}
+      {% endfor %}
+    </div>
+   </div>

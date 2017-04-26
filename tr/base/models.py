@@ -57,11 +57,34 @@ class ColBlock(blocks.StructBlock):
     width = blocks.ChoiceBlock(COL_WIDTHS, COL_WIDTH_FULL, required=True)
 
 
+class ColSliderBlock(ColBlock):
+    images = blocks.StreamBlock([
+        ('image', ImageChooserBlock())
+    ])
+
+    class Meta:
+        template = 'blocks/col_slider_block.html'
+
+
 class RichTextColBlock(ColBlock):
     content = blocks.RichTextBlock(required=False)
 
     class Meta:
         template = 'blocks/rich_text_col_block.html'
+
+
+class RichTextRawColBlock(ColBlock):
+    content = blocks.RawHTMLBlock(required=False)
+
+    class Meta:
+        template = 'blocks/rich_text_col_block.html'
+
+
+class RichTextColWithIconBlock(RichTextColBlock):
+    icon = blocks.CharBlock()
+
+    class Meta:
+        template = 'blocks/rich_text_col_with_icon_block.html'
 
 
 class AccordionItemBlock(blocks.StructBlock):
@@ -82,9 +105,23 @@ class AccordionBlock(ColBlock):
         template = 'blocks/accordion_block.html'
 
 
+class AccordionWithTitleBlock(ColBlock):
+    title = blocks.CharBlock()
+    accordion_items = blocks.StreamBlock([
+        ('accordion_item', AccordionItemBlock())
+    ])
+
+    class Meta:
+        template = 'blocks/accordion_with_title_block.html'
+
+
 class RichTextRowBlock(blocks.StreamBlock):
     accordion = AccordionBlock()
+    accordion_with_title = AccordionWithTitleBlock()
     rich_text = RichTextColBlock()
+    rich_text_raw = RichTextRawColBlock()
+    rich_text_with_icon = RichTextColWithIconBlock()
+    col_slider_block = ColSliderBlock()
 
     class Meta:
         template = 'blocks/rich_text_row_block.html'
@@ -184,6 +221,14 @@ class ContactBlock(blocks.StructBlock):
         template = 'blocks/contact_block.html'
 
 
+class BigMapBlock(blocks.StructBlock):
+    left_column = blocks.RawHTMLBlock(required=False)
+    right_column = blocks.RawHTMLBlock(required=False)
+
+    class Meta:
+        template = 'blocks/big_map_block.html'
+
+
 class RichTextPage(Page):
 
     body = StreamField([
@@ -204,23 +249,19 @@ class RichTextPage(Page):
     class Meta:
         verbose_name = _('Rich text Page')
         verbose_name_plural = _('Rich text Pages')
-#
-#
-# class GalleryPage(PageHeaderImage):
-#     collection = models.ForeignKey(Collection, null=True, blank=True, on_delete=models.SET_NULL)
-#
-#     content_panels = PageHeaderImage.content_panels + [
-#         FieldPanel('collection'),
-#     ]
-#
-#     def get_context(self, request, *args, **kwargs):
-#         context = super(GalleryPage, self).get_context(request, *args, **kwargs)
-#         if self.collection:
-#             context['images'] = Image.objects.filter(collection=self.collection)
-#         else:
-#             context['images'] = None
-#         return context
-#
-#     class Meta:
-#         verbose_name = _('Gallery Page')
-#         verbose_name_plural = _('Gallery Pages')
+
+
+class ContactPage(Page):
+    body = StreamField([
+        ('big_map', BigMapBlock()),
+        ('section', SectionBlock()),
+    ],
+    blank=True,)
+
+    content_panels = Page.content_panels + [
+        StreamFieldPanel('body'),
+    ]
+
+    class Meta:
+        verbose_name = _('Contact Page')
+        verbose_name_plural = _('Contact Pages')
