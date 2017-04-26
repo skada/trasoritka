@@ -58,7 +58,7 @@ class ColBlock(blocks.StructBlock):
 
 
 class RichTextColBlock(ColBlock):
-    content = blocks.RichTextBlock(required=True)
+    content = blocks.RichTextBlock(required=False)
 
     class Meta:
         template = 'blocks/rich_text_col_block.html'
@@ -66,7 +66,7 @@ class RichTextColBlock(ColBlock):
 
 class AccordionItemBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=True)
-    content = blocks.TextBlock(required=True)
+    content = blocks.RichTextBlock(required=True)
 
     class Meta:
         template = 'blocks/accordion_item_block.html'
