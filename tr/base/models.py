@@ -6,6 +6,7 @@ from wagtail.wagtailadmin.edit_handlers import StreamFieldPanel, FieldPanel
 from wagtail.wagtailcore import blocks
 from wagtail.wagtailcore.fields import StreamField
 from wagtail.wagtailcore.models import Page, Collection
+from wagtail.wagtaildocs.blocks import DocumentChooserBlock
 from wagtail.wagtailimages.blocks import ImageChooserBlock
 from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
 from wagtail.wagtailimages.models import Image
@@ -55,6 +56,15 @@ class FullWidthImageBlock(blocks.StructBlock):
 
 class ColBlock(blocks.StructBlock):
     width = blocks.ChoiceBlock(COL_WIDTHS, COL_WIDTH_FULL, required=True)
+
+
+class LinkButtonBlock(ColBlock):
+    title = blocks.CharBlock()
+    page = blocks.PageChooserBlock(required=False)
+    document = DocumentChooserBlock(required=False)
+
+    class Meta:
+        template = 'blocks/link_button_block.html'
 
 
 class ColSliderBlock(ColBlock):
@@ -122,6 +132,7 @@ class RichTextRowBlock(blocks.StreamBlock):
     rich_text_raw = RichTextRawColBlock()
     rich_text_with_icon = RichTextColWithIconBlock()
     col_slider_block = ColSliderBlock()
+    link_button = LinkButtonBlock()
 
     class Meta:
         template = 'blocks/rich_text_row_block.html'

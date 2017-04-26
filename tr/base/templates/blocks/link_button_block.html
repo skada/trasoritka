@@ -1,0 +1,7 @@
+                <div class="col-md-{{ value.width }}">
+                    {% if value.page %}
+                    <a class="btn btn-sm nav-justified" href="{{ value.page.url }}"> {{ value.title }} </a>
+                    {% elif value.document %}
+                    <a class="btn btn-sm nav-justified" href="{{ value.document.url }}"> {{ value.title }} </a>
+                    {% endif %}
+                </div>
