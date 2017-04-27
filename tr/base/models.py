@@ -266,6 +266,7 @@ class ContactPage(Page):
     body = StreamField([
         ('big_map', BigMapBlock()),
         ('section', SectionBlock()),
+        ('separator', SeparatorBlock()),
     ],
     blank=True,)
 
