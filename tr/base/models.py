@@ -240,6 +240,12 @@ class BigMapBlock(blocks.StructBlock):
         template = 'blocks/big_map_block.html'
 
 
+class NewsStripeBlock(blocks.StaticBlock):
+
+    class Meta:
+        template = 'blocks/news_stripe_block.html'
+
+
 class RichTextPage(Page):
 
     body = StreamField([
@@ -250,6 +256,7 @@ class RichTextPage(Page):
         ('counters', CountersBlock()),
         ('minislider', MiniSliderBlock()),
         ('contact_panel', ContactBlock()),
+        ('news', NewsStripeBlock()),
     ],
     blank=True,)
 
