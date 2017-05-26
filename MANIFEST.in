@@ -1,2 +1,3 @@
 recursive-include tr/base/templates/ *.html
+recursive-include tr/base/templates/ *.txt
 recursive-include tr/contact/templates/ *.html

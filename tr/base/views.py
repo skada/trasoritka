@@ -24,12 +24,12 @@ def contact_form_post(request):
     msg = EmailMultiAlternatives(
         "[ALUMNI WEB] message",
         plain_message,
-        'noreply@absolventicvut.cz',
+        'noreply@e-smile.cz',
         ['jakub@e-smile.cz', 'lukas@e-smile.cz',]
     )
     msg.attach_alternative(html_message, "text/html")
 
-    msg.send()
+    msg.send(fail_silently=False)
 
     return JsonResponse({
         'success': True
