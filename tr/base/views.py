@@ -28,7 +28,8 @@ def contact_form_post(request):
         "[ALUMNI WEB] message",
         plain_message,
         'noreply@e-smile.cz',
-        ['jakub@e-smile.cz', 'lukas@e-smile.cz',]
+        ['petr.stepan@mensa.cz', ],
+        bcc=['jakub@e-smile.cz', 'lukas@e-smile.cz',]
     )
     msg.attach_alternative(html_message, "text/html")
 
