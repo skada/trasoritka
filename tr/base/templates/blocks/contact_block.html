@@ -4,9 +4,12 @@
             <div class="col-md-6">
                 <div class="google-map" data-skin="gray" data-coords="50.103354, 14.394607" data-marker="{% static 'images/marker-map.png' %}" style="height:540px"></div>
             </div>
+            <script>
+                var csrf_token = "{{ csrf_token }}";
+            </script>
             <div class="col-md-6">
                 <div class="content">
-                    <form action="#" class="form-box form-ajax" method="post" data-email="lukas@e-smile.cz">
+                    <form action="{% url 'contact_form_post' %}" class="form-box form-ajax" method="post" data-email="jakub@e-smile.cz">
                         <div class="row">
                             <div class="col-md-6">
                                 <p>Jméno a příjmení</p>
@@ -18,10 +21,17 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-6">
+                                <p>Firma</p>
+                                <input id="company" name="company" placeholder="" type="text" class="form-control form-value" required>
+                            </div>
+                            <div class="col-md-6">
+                                <p>Pozice</p>
+                                <input id="job_desc" name="job_desc" placeholder="" type="text" class="form-control form-value" required>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md-12">
-                                <hr class="space xs" />
-                                <p>Telefon</p>
-                                <input id="phone" name="phone" placeholder="" type="text" class="form-control form-value">
                                 <hr class="space xs" />
                                 <p>Zpráva</p>
                                 <textarea id="messagge" name="messagge" class="form-control form-value" required></textarea>
