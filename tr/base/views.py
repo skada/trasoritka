@@ -1,4 +1,5 @@
 import json
+import logging
 
 from django.core.mail import EmailMultiAlternatives
 from django.http import Http404, HttpResponse, JsonResponse
@@ -20,6 +21,8 @@ def contact_form_post(request):
 
     html_template = loader.get_template('mail/contact_mail.html')
     html_message = html_template.render(Context(data))
+
+    logging.error("data: %s", data)
 
     msg = EmailMultiAlternatives(
         "[ALUMNI WEB] message",
