@@ -1,0 +1,44 @@
+            <script>
+                var csrf_token = "{{ csrf_token }}";
+            </script>
+            <div class="col-md-{{ value.width }}">
+                <div class="content">
+                    <form action="{% url 'contact_form_post' %}" class="form-box form-ajax" method="post" data-email="jakub@e-smile.cz">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>Jméno a příjmení</p>
+                                <input id="name" name="name" placeholder="" type="text" class="form-control form-value" required>
+                            </div>
+                            <div class="col-md-6">
+                                <p>E-mail</p>
+                                <input id="email-2" name="email" placeholder="" type="email" class="form-control form-value" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>Firma</p>
+                                <input id="company" name="company" placeholder="" type="text" class="form-control form-value" required>
+                            </div>
+                            <div class="col-md-6">
+                                <p>Pozice</p>
+                                <input id="job_desc" name="job_desc" placeholder="" type="text" class="form-control form-value" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <hr class="space xs" />
+                                <p>Zpráva</p>
+                                <textarea id="messagge" name="messagge" class="form-control form-value" required></textarea>
+                                <hr class="space s" />
+                                <button class="square-button btn-sm btn" type="submit"><i class="fa fa-envelope-o"></i>Odeslat zprávu</button>
+                            </div>
+                        </div>
+                        <div class="success-box">
+                            <div class="alert alert-success">Vaše zpráva byla odeslána, brzy se ozveme!</div>
+                        </div>
+                        <div class="error-box">
+                            <div class="alert alert-warning">Vyskytla se chyba, zkuste to, prosíme, znovu. Pro odeslaní formuláře musíte být přihlášen(a).</div>
+                        </div>
+                    </form>
+                </div>
+            </div>

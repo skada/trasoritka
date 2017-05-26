@@ -58,6 +58,18 @@ class ColBlock(blocks.StructBlock):
     width = blocks.ChoiceBlock(COL_WIDTHS, COL_WIDTH_FULL, required=True)
 
 
+class GoogleMapBlock(ColBlock):
+
+    class Meta:
+        template = 'blocks/google_map_block.html'
+
+
+class ContactFormBlock(ColBlock):
+
+    class Meta:
+        template = 'blocks/contact_form_block.html'
+
+
 class LinkButtonBlock(ColBlock):
     title = blocks.CharBlock()
     page = blocks.PageChooserBlock(required=False)
@@ -133,6 +145,8 @@ class RichTextRowBlock(blocks.StreamBlock):
     rich_text_with_icon = RichTextColWithIconBlock()
     col_slider_block = ColSliderBlock()
     link_button = LinkButtonBlock()
+    google_map_block = GoogleMapBlock()
+    contact_form = ContactFormBlock()
 
     class Meta:
         template = 'blocks/rich_text_row_block.html'
@@ -227,6 +241,8 @@ class MiniSliderBlock(blocks.ListBlock):
 
 
 class ContactBlock(blocks.StructBlock):
+    map = GoogleMapBlock()
+    contact_form = ContactFormBlock()
 
     class Meta:
         template = 'blocks/contact_block.html'
@@ -257,6 +273,7 @@ class RichTextPage(Page):
         ('minislider', MiniSliderBlock()),
         ('contact_panel', ContactBlock()),
         ('news', NewsStripeBlock()),
+        ('contact_block_with_map', ContactBlock()),
     ],
     blank=True,)
 
