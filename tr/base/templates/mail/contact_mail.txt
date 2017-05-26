@@ -1,0 +1,6 @@
+Name: {{name.0}}
+Email: {{email.0}}
+Company: {{company.0}}
+Job title: {{job_desc.0}}
+Message:
+{{messagge.0}}
