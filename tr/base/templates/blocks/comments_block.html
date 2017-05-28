@@ -1,0 +1,33 @@
+{% load wagtailcore_tags i18n wagtailroutablepage_tags bootstrap3 %}
+<div class="col-md-{{value.width}}">
+  <h3>{% trans 'Comments' %}</h3>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      {% for reply in page.comments.replies.all %}
+      <div id="reply_{{ reply.pk }}">
+        <div>
+          {{ reply.content_html|safe }}
+        </div>
+        <div>
+          <span>{% trans 'Created' %}: {{ reply.created }}</span>
+          <span>{% trans 'Author' %}: {{ reply.author }}</span>
+        </div>
+      </div>
+      {% if not forloop.last %}
+      <hr/>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% if can_create_reply %}
+    <div class="panel-heading">
+      <h3>{% trans 'New Reply' %}</h3>
+      <form method="post" action="{% routablepageurl page 'reply_create' page.comments.pk %}">
+        {% csrf_token %}
+        {% bootstrap_form reply_form %}
+        <button class="btn btn-default center-block" type="submit">{% trans 'Reply' %}</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+
+</div>

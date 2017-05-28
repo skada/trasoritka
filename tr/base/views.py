@@ -22,8 +22,6 @@ def contact_form_post(request):
     html_template = loader.get_template('mail/contact_mail.html')
     html_message = html_template.render(Context(data))
 
-    logging.error("data: %s", data)
-
     msg = EmailMultiAlternatives(
         "[ALUMNI WEB] message",
         plain_message,

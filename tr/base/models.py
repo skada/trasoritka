@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.functional import lazy
 from django.utils.translation import ugettext_lazy as _
+from wagtail.contrib.wagtailroutablepage.models import RoutablePageMixin, route
 from wagtail.wagtailadmin.edit_handlers import StreamFieldPanel, FieldPanel
 
 from wagtail.wagtailcore import blocks
@@ -10,6 +11,9 @@ from wagtail.wagtaildocs.blocks import DocumentChooserBlock
 from wagtail.wagtailimages.blocks import ImageChooserBlock
 from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
 from wagtail.wagtailimages.models import Image
+
+from wagtailforums.models import Forum, ForumThread
+from wagtailforums.models import reply_create
 
 
 class PageHeaderImage(Page):
@@ -56,6 +60,12 @@ class FullWidthImageBlock(blocks.StructBlock):
 
 class ColBlock(blocks.StructBlock):
     width = blocks.ChoiceBlock(COL_WIDTHS, COL_WIDTH_FULL, required=True)
+
+
+class CommentsBlock(ColBlock):
+
+    class Meta:
+        template = 'blocks/comments_block.html'
 
 
 class GoogleMapBlock(ColBlock):
@@ -147,6 +157,7 @@ class RichTextRowBlock(blocks.StreamBlock):
     link_button = LinkButtonBlock()
     google_map_block = GoogleMapBlock()
     contact_form = ContactFormBlock()
+    comments = CommentsBlock()
 
     class Meta:
         template = 'blocks/rich_text_row_block.html'
@@ -262,7 +273,10 @@ class NewsStripeBlock(blocks.StaticBlock):
         template = 'blocks/news_stripe_block.html'
 
 
-class RichTextPage(Page):
+class RichTextPage(RoutablePageMixin, Page):
+
+    comments = models.OneToOneField('wagtailforums.ForumThread', null=True, blank=True, on_delete=models.SET_NULL)
+    comments_enable = models.BooleanField(_('Enable comments'), default=False)
 
     body = StreamField([
         ('full_size_image', FullWidthImageBlock()),
@@ -280,6 +294,43 @@ class RichTextPage(Page):
     content_panels = Page.content_panels + [
         StreamFieldPanel('body'),
     ]
+
+    settings_panels = Page.settings_panels + [
+        FieldPanel('comments_enable'),
+    ]
+
+    @route(r"^reply/(\d+)/$", name="reply_create")
+    def reply_create(self, request, thread_id):
+        context = self.get_context(request)
+        return reply_create(request, thread_id, self, context=context, return_to_page=True)
+
+    def save(self, *args, **kwargs):
+        if self.comments_enable and not self.comments:
+            FORUM_PAGE_COMMENTS = 'Page comments holder forum'
+            FORUM_COMMENTS, created = Forum.objects.get_or_create(title=FORUM_PAGE_COMMENTS)
+            title = self.title
+            description = getattr(self, 'content', "")
+            self.comments, created = ForumThread.objects.get_or_create(
+                title=title,
+                content=description,
+                author=self.owner,
+                forum=FORUM_COMMENTS,
+            )
+        return super(RichTextPage, self).save(*args, **kwargs)
+
+    def get_context(self, request, *args, **kwargs):
+        context = super(RichTextPage, self).get_context(request, *args, **kwargs)
+        if self.comments:
+            can_create_reply = all([
+                request.user.has_perm("forums.add_forumreply", obj=self.comments),
+                not self.comments.closed,
+                not self.comments.forum.closed,
+            ])
+            context['can_create_reply'] = can_create_reply
+            from wagtailforums.forms import ReplyForm
+            context['reply_form'] = ReplyForm()
+
+        return context
 
     class Meta:
         verbose_name = _('Rich text Page')
